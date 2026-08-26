@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
+  try {
+    if (localStorage.getItem('siteView') === 'desktop') {
+      document.getElementById('viewport-meta').setAttribute('content', 'width=1280');
+    }
+  } catch (e) {}
+</script>
 <title>Haimo Duan — Brand & Integrated Marketing Strategist</title>
 <style>
   :root {
@@ -461,6 +469,9 @@
     padding: 26px 0 34px;
   }
   footer a { color: rgba(255,255,255,0.75); text-decoration: none; }
+  .view-toggle { margin-top: 10px; }
+  .view-toggle a { text-decoration: underline; text-underline-offset: 3px; color: rgba(255,255,255,0.6); }
+  .view-toggle a:hover { color: #fff; }
 
   .work-media.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
   .work-media.grid-4 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; }
@@ -935,8 +946,28 @@
 <footer>
   <div class="wrap">
     © 2026 Haimo Duan · Perth, WA · Brand &amp; Integrated Marketing Strategist
+    <div class="view-toggle"><a href="#" id="view-toggle-link">View Desktop Version</a></div>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var isDesktop = false;
+    try { isDesktop = localStorage.getItem('siteView') === 'desktop'; } catch (e) {}
+
+    var link = document.getElementById('view-toggle-link');
+    link.textContent = isDesktop ? 'Switch back to Mobile View' : 'View Desktop Version';
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      try {
+        if (isDesktop) { localStorage.removeItem('siteView'); }
+        else { localStorage.setItem('siteView', 'desktop'); }
+      } catch (err) {}
+      window.scrollTo(0, 0);
+      location.reload();
+    });
+  })();
+</script>
 
 </body>
 </html>
